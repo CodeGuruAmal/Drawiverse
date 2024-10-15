@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Arrow, Ellipse, Line, Rect } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { setShapes } from "../../utils/drawSlice";
+import { setSelectedShape } from "../../utils/drawSlice";
 
-const ShapeRenderer = () => {
+const ShapeRenderer = ({ onShapeSelect }) => {
   const dispatch = useDispatch();
   const shapes = useSelector((state) => state.draw.shapes);
+  const toolSelected = useSelector((state) => state.control.toolSelected);
+  const shapeRefs = useRef([]);
 
-  const handleShapeSelect = (e,i) => {
-    console.log(e)
-    console.log(i)
-  }
+  const handleShapeSelect = (index) => {
+    if (toolSelected === "mouse") {
+      dispatch(setSelectedShape(index));
+      onShapeSelect(shapeRefs.current[index]);
+    }
+  };
 
   return (
     <>
       {shapes.map((item, index) => {
+        let shapeNode = null;
         switch (item.type) {
           case "rectangle":
-            return (
+            shapeNode = (
               <Rect
                 key={index}
+                ref={(node) => (shapeRefs.current[index] = node)}
                 x={item.x}
                 y={item.y}
                 strokeWidth={item.strokeWidth}
@@ -28,16 +34,19 @@ const ShapeRenderer = () => {
                 width={item.width}
                 height={item.height}
                 lineJoin="round"
-                onClick={(e) => handleShapeSelect(e, index)}
+                onClick={() => handleShapeSelect(index)}
+                onTap={() => handleShapeSelect(index)}
                 // draggable
                 // onDragEnd={(e) => handleDragEnd(e, index)}
               />
             );
+            break;
 
           case "ellipse":
-            return (
+            shapeNode = (
               <Ellipse
                 key={index}
+                ref={(node) => (shapeRefs.current[index] = node)}
                 x={item.x + item.width / 2}
                 y={item.y + item.height / 2}
                 radiusX={Math.abs(item.width) / 2}
@@ -45,16 +54,19 @@ const ShapeRenderer = () => {
                 strokeWidth={item.strokeWidth}
                 stroke={item.strokeColor}
                 fill={item.fillColor}
-
+                onClick={() => handleShapeSelect(index)}
+                onTap={() => handleShapeSelect(index)}
                 // draggable
                 // onDragEnd={(e) => handleDragEnd(e, index)}
               />
             );
+            break;
 
           case "arrow":
-            return (
+            shapeNode = (
               <Arrow
                 key={index}
+                ref={(node) => (shapeRefs.current[index] = node)}
                 points={[
                   item.x,
                   item.y,
@@ -70,16 +82,19 @@ const ShapeRenderer = () => {
                 lineCap="round"
                 tension={0.5}
                 lineJoin="round"
-
+                onClick={() => handleShapeSelect(index)}
+                onTap={() => handleShapeSelect(index)}
                 // draggable
                 // onDragEnd={(e) => handleDragEnd(e, index)}
               />
             );
+            break;
 
           case "line":
-            return (
+            shapeNode = (
               <Line
                 key={index}
+                ref={(node) => (shapeRefs.current[index] = node)}
                 points={[
                   item.x,
                   item.y,
@@ -93,17 +108,24 @@ const ShapeRenderer = () => {
                 lineCap="round"
                 tension={0.5}
                 lineJoin="round"
-
+                onClick={() => handleShapeSelect(index)}
+                onTap={() => handleShapeSelect(index)}
                 // draggable
                 // onDragEnd={(e) => handleDragEnd(e, index)}
               />
             );
+            break;
 
           case "pencil":
-            return (
+            shapeNode = (
               <Line
                 key={index}
-                points={item.points.flatMap((point) => [point.x, point.y])}
+                ref={(node) => (shapeRefs.current[index] = node)}
+                points={
+                  item.points
+                    ? item.points.flatMap((point) => [point.x, point.y])
+                    : []
+                }
                 stroke={item.strokeColor}
                 fill={item.fillColor}
                 hitStrokeWidth={30}
@@ -111,12 +133,18 @@ const ShapeRenderer = () => {
                 lineCap="round"
                 tension={0.5}
                 lineJoin="round"
-
+                onClick={() => handleShapeSelect(index)}
+                onTap={() => handleShapeSelect(index)}
                 // draggable
                 // onDragEnd={(e) => handleDragEnd(e, index)}
               />
             );
+            break; 
+
+          default:
+            return null;
         }
+        return shapeNode;
       })}
     </>
   );

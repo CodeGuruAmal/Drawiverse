@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Layer, Stage } from "react-konva";
+import { Layer, Stage, Transformer } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToUndoStack,
@@ -30,6 +30,7 @@ const Canvas = () => {
   const [stageScale, setStageScale] = useState(1);
   const [stagePosition, setStagePosition] = useState({ x: 0, y: 0 });
   const transformerRef = useRef();
+  const [selectedNode, setSelectedNode] = useState(null);
 
   const zoomPercentage = Math.round(stageScale * 100);
 
@@ -146,12 +147,16 @@ const Canvas = () => {
   const handleUndo = () => dispatch(setUndo());
   const handleRedo = () => dispatch(setRedo());
 
+  const handleShapeSelect = (node) => {
+    setSelectedNode(node);
+  };
+
   useEffect(() => {
-    if (selectedShape) {
-      transformerRef.current.nodes([selectedShape]);
+    if (selectedNode) {
+      transformerRef.current.nodes([selectedNode]);
       transformerRef.current.getLayer().batchDraw();
     }
-  }, [selectedShape]);
+  }, [selectedNode]);
 
   return (
     <>
@@ -229,7 +234,8 @@ const Canvas = () => {
         }}
       >
         <Layer>
-          <ShapeRenderer />
+        <ShapeRenderer onShapeSelect={handleShapeSelect} />
+        <Transformer ref={transformerRef} />
         </Layer>
       </Stage>
     </>
