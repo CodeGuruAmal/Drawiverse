@@ -214,7 +214,7 @@ const Canvas = () => {
       </div>
       <Stage
         className="overflow-hidden bg-[#121212]"
-        onClick={() => dispatch(setMenuClick(false))}
+        onClick={() => {dispatch(setMenuClick(false)); }}
         width={window.innerWidth}
         height={window.innerHeight}
         onMouseDown={handleStart}
@@ -230,12 +230,23 @@ const Canvas = () => {
         draggable={toolSelected === "hand"}
         onWheel={handleWheel}
         onDragEnd={(e) => {
-          setStagePosition({ x: e.target.x(), y: e.target.y() });
+          if (toolSelected === "hand") {
+            setStagePosition({ x: e.target.x(), y: e.target.y() });
+          }
         }}
       >
         <Layer>
-        <ShapeRenderer onShapeSelect={handleShapeSelect} />
-        <Transformer ref={transformerRef} />
+          <ShapeRenderer onShapeSelect={handleShapeSelect} />
+          <Transformer
+            ref={transformerRef}
+            borderStroke="#b1afea"
+            borderStrokeWidth={1}
+            anchorStroke="#b1afea"
+            anchorFill="#b1afea"
+            anchorSize={7}
+            anchorCornerRadius={2}
+            padding={4}
+          />
         </Layer>
       </Stage>
     </>

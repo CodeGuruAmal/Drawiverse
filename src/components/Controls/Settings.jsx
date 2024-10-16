@@ -81,25 +81,25 @@ const Settings = () => {
         <h4>Stroke width</h4>
         <div className="option flex items-center gap-3 mt-2 text-white">
           <button
-            onClick={() => handleStrokeWidth(3)}
+            onClick={() => handleStrokeWidth(1)}
             className={`${
-              strokeWidth === 3 ? "bg-[#694a8b]" : "bg-zinc-700"
+              strokeWidth === 1 ? "bg-[#694a8b]" : "bg-zinc-700"
             }  p-[.4rem] bg- rounded`}
           >
             <PiMinusLight />
           </button>
           <button
-            onClick={() => handleStrokeWidth(5)}
+            onClick={() => handleStrokeWidth(3)}
             className={`${
-              strokeWidth === 5 ? "bg-[#694a8b]" : "bg-zinc-700"
+              strokeWidth === 3 ? "bg-[#694a8b]" : "bg-zinc-700"
             }  p-[.4rem] bg- rounded`}
           >
             <PiMinusBold />
           </button>
           <button
-            onClick={() => handleStrokeWidth(7)}
+            onClick={() => handleStrokeWidth(5)}
             className={`${
-              strokeWidth === 7 ? "bg-[#694a8b]" : "bg-zinc-700"
+              strokeWidth === 5 ? "bg-[#694a8b]" : "bg-zinc-700"
             } p-[.4rem] bg- rounded`}
           >
             <FaMinus />

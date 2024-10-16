@@ -4,8 +4,7 @@ const SettingContext = createContext();
 
 export const SettingProvider = ({ children }) => {
   const [strokeColor, setStrokeColor] = useState("#e4e4e7");
-  const [strokeWidth, setStrokeWidth] = useState(3);
-  const [strokeStyle, setStrokeStyle] = useState("solid");
+  const [strokeWidth, setStrokeWidth] = useState(1);
   const [fillColor, setFillColor] = useState("#e4e4e700");
 
   const handleStrokeColor = (color) => {
@@ -14,10 +13,6 @@ export const SettingProvider = ({ children }) => {
 
   const handleFillColor = (color) => {
     setFillColor(color);
-  }
-
-  const handleStrokeStyle = (style) => {
-    setStrokeStyle(style);
   }
 
   const handleStrokeWidth = (width) => {
@@ -31,9 +26,7 @@ export const SettingProvider = ({ children }) => {
         handleStrokeColor,
         handleFillColor,
         handleStrokeWidth,
-        handleStrokeStyle,
         strokeColor,
-        strokeStyle,
         fillColor,
         strokeWidth,
       }}

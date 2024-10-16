@@ -36,7 +36,7 @@ const ShapeRenderer = ({ onShapeSelect }) => {
                 lineJoin="round"
                 onClick={() => handleShapeSelect(index)}
                 onTap={() => handleShapeSelect(index)}
-                // draggable
+                draggable
                 // onDragEnd={(e) => handleDragEnd(e, index)}
               />
             );
